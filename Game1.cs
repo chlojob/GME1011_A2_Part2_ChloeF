@@ -9,6 +9,10 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
+    private Ped ped1; // zero-argument constructor
+    private Ped ped2; // argumented constructor
+    private Texture2D pedTexture;
+
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -27,7 +31,11 @@ public class Game1 : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-        // TODO: use this.Content to load your game content here
+        // Loads texture for player object
+        pedTexture = Content.Load<Texture2D>("playerPed");
+
+        Ped defaultPed = new Ped(); // zero-arg constructor
+        defaultPed.SetTexture(pedTexture); // apply default sprite
     }
 
     protected override void Update(GameTime gameTime)

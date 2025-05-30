@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Graphics;
+using System.Security.Cryptography.X509Certificates;
 
 namespace GME1011_A2_Part2_ChloeF
 {
@@ -16,6 +18,8 @@ namespace GME1011_A2_Part2_ChloeF
         private float _scale;
         private bool _isRushing;
 
+        private Texture2D _texture;
+
         // Position
         private Vector2 _position;
 
@@ -26,16 +30,18 @@ namespace GME1011_A2_Part2_ChloeF
             _speed = 2.5f;
             _scale = 1.0f;
             _isRushing = false;
+            _texture = null;
             _position = new Vector2(200, 600);
         }
 
         // Argumented constructor
-        public Ped(string color, float speed, float scale, bool isRushing)
+        public Ped(string color, float speed, float scale, bool isRushing, Texture2D texture)
         {
             this._color = color;
             this._speed = speed;
             this._scale = scale;
             this._isRushing = isRushing;
+            _texture = texture;
             _position = new Vector2(600, 600);
         }
 
@@ -52,6 +58,11 @@ namespace GME1011_A2_Part2_ChloeF
         public void SetScale(float scale) { _scale = scale; }
         public void SetIsRushing(bool isRushing) { _isRushing = isRushing; }
         public void SetPosition(Vector2 position) { _position = position; }
+
+        public void SetTexture(Texture2D texture)
+        {
+            _texture = texture;
+        }
 
         public void Update()
         {
@@ -82,7 +93,28 @@ namespace GME1011_A2_Part2_ChloeF
                 _position.X -= currentSpeed;
             if (keyState.IsKeyDown(Keys.Right) || keyState.IsKeyDown(Keys.D))
                 _position.X += currentSpeed;
+        }
+
+        // Draws pedestrian on screen using its texture, position, scale
+        // Only draws if a texture has been assigned
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            if (_texture != null)
+            {
+                spriteBatch.Draw(
+                    _texture,
+                    _position,
+                    null,
+                    Color.White,
+                    0f,
+                    Vector2.Zero,
+                    _scale,
+                    SpriteEffects.None,
+                    0f);
+            }
 
         }
+
     }
 }
+
