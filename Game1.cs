@@ -9,20 +9,26 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
-    private Ped ped1; // zero-argument constructor
-    private Ped ped2; // argumented constructor
-    private Texture2D pedTexture;
+    private Ped _ped1; // Zero-argument constructor pedestrian
+    private Ped _ped2; // Argumented constructor pedestrian
+    private Texture2D _pedTexture; // Texture for both pedestrian types
 
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
+
+        _graphics.PreferredBackBufferWidth = 800;
+        _graphics.PreferredBackBufferHeight = 600;
+        _graphics.ApplyChanges();
+
     }
 
     protected override void Initialize()
     {
-        // TODO: Add your initialization logic here
+        // Creates ped1 with zero-argument constructor defaults
+        _ped1 = new Ped();
 
         base.Initialize();
     }
@@ -31,11 +37,15 @@ public class Game1 : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-        // Loads texture for player object
-        pedTexture = Content.Load<Texture2D>("playerPed");
+        // Loads texture for player pedestrian
+        _pedTexture = Content.Load<Texture2D>("playerPed");
 
-        Ped defaultPed = new Ped(); // zero-arg constructor
-        defaultPed.SetTexture(pedTexture); // apply default sprite
+        _ped1 = new Ped(); // Create ped with default values and assign texture
+        _ped1.SetTexture(_pedTexture);
+
+        // Creates pedestrian with custom values, same texture
+        _ped2 = new Ped(Color.Green, 4.5f, 1.0f, false, _pedTexture); 
+
     }
 
     protected override void Update(GameTime gameTime)
@@ -43,16 +53,24 @@ public class Game1 : Game
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
-        // TODO: Add your update logic here
+        // Update both ped objects for movement and rushing
+        _ped1.Update();
+        _ped2.Update();
 
         base.Update(gameTime);
     }
 
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(Color.CornflowerBlue);
+        GraphicsDevice.Clear(Color.LightSlateGray);
 
-        // TODO: Add your drawing code here
+        _spriteBatch.Begin();
+
+        // Draws both pedestrians
+        _ped1.Draw(_spriteBatch);
+        _ped2.Draw(_spriteBatch);
+
+        _spriteBatch.End();
 
         base.Draw(gameTime);
     }

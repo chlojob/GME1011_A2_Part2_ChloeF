@@ -13,7 +13,7 @@ namespace GME1011_A2_Part2_ChloeF
     public class Ped
     {
         // Attributes
-        private string _color;
+        private Color _color;
         private float _speed;
         private float _scale;
         private bool _isRushing;
@@ -26,34 +26,34 @@ namespace GME1011_A2_Part2_ChloeF
         // Zero-argument constructor
         public Ped()
         {
-            _color = "white";
-            _speed = 2.5f;
+            _color = Color.White;
+            _speed = 3.5f;
             _scale = 1.0f;
             _isRushing = false;
             _texture = null;
-            _position = new Vector2(200, 600);
+            _position = new Vector2(200, 400);
         }
 
         // Argumented constructor
-        public Ped(string color, float speed, float scale, bool isRushing, Texture2D texture)
+        public Ped(Color color, float speed, float scale, bool isRushing, Texture2D texture)
         {
             this._color = color;
             this._speed = speed;
             this._scale = scale;
             this._isRushing = isRushing;
-            _texture = texture;
-            _position = new Vector2(600, 600);
+            this._texture = texture;
+            this._position = new Vector2(600, 400);
         }
 
         // Accessors
-        public string GetColor() { return _color; }
+        public Color GetColor() { return _color; }
         public float GetSpeed() { return _speed; }
         public float GetScale() { return _scale; }
         public bool GetIsRushing() { return _isRushing; }
         public Vector2 GetPosition() { return _position; }
 
         // Mutators
-        public void SetColor(string color) { _color = color; }
+        public void SetColor(Color color) { _color = color; }
         public void SetSpeed(float speed) { _speed = speed; }
         public void SetScale(float scale) { _scale = scale; }
         public void SetIsRushing(bool isRushing) { _isRushing = isRushing; }
@@ -77,7 +77,7 @@ namespace GME1011_A2_Part2_ChloeF
 
             if (_isRushing)
             {
-                currentSpeed = _speed + 2.0f;
+                currentSpeed = _speed + 2.5f;
             }
             else
             {
@@ -96,7 +96,6 @@ namespace GME1011_A2_Part2_ChloeF
         }
 
         // Draws pedestrian on screen using its texture, position, scale
-        // Only draws if a texture has been assigned
         public void Draw(SpriteBatch spriteBatch)
         {
             if (_texture != null)
@@ -105,12 +104,13 @@ namespace GME1011_A2_Part2_ChloeF
                     _texture,
                     _position,
                     null,
-                    Color.White,
+                    _color,
                     0f,
-                    Vector2.Zero,
+                    new Vector2(32f, 32f),
                     _scale,
                     SpriteEffects.None,
                     0f);
+
             }
 
         }
