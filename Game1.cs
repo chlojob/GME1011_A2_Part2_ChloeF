@@ -8,6 +8,7 @@ public class Game1 : Game
 {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
+    private SpriteFont _font;
 
     private Ped _ped1; // Zero-argument constructor pedestrian
     private Ped _ped2; // Argumented constructor pedestrian
@@ -36,6 +37,8 @@ public class Game1 : Game
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
+
+        _font = Content.Load<SpriteFont>("GameFont");
 
         // Loads texture for player pedestrian
         _pedTexture = Content.Load<Texture2D>("playerPed");
@@ -69,6 +72,17 @@ public class Game1 : Game
         // Draws both pedestrians
         _ped1.Draw(_spriteBatch);
         _ped2.Draw(_spriteBatch);
+
+        // Draws isRushing bool state
+        _spriteBatch.DrawString(
+            _font, $"Ped1 Rushing: {_ped1.GetIsRushing()}",
+            new Vector2(10, 10),
+            Color.White);
+
+        _spriteBatch.DrawString(
+            _font, $"Ped2 Rushing: {_ped1.GetIsRushing()}",
+            new Vector2(10, 40),
+            Color.White);
 
         _spriteBatch.End();
 
