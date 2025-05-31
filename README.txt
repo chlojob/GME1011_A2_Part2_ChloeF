@@ -10,6 +10,6 @@ I also had AI set up the text drawing as a last minute addition, for the isRushi
 for both peds though even though they're in sync.
 
 AI is useful for saving time and debugging, it can check issues you present to it and provide a reason and solution.
-A drawback to using AI is that in general, is that it can present methods of doing things that are more advanced than my skill level. 
+A drawback to using AI is that in general, it can present methods of doing things that are more advanced than my skill level. 
 I'm mostly just trying to follow along with what you've provided us in class, for example the PlantsVsZombies repository that I cloned, 
 and I want to actually understand what it is I'm coding.
