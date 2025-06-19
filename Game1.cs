@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -10,8 +12,13 @@ public class Game1 : Game
     private SpriteBatch _spriteBatch;
     private SpriteFont _font;
 
-    private Ped _ped; // Argumented constructor pedestrian
-    private Texture2D _pedTexture; // Texture for ped
+    private Ped _ped;
+    private Texture2D _pedTexture;
+
+    private List<Vehicle> _vehicles;
+    private Texture2D _carTexture;
+    private Texture2D _truckTexture;
+    private Random _rng;
 
     public Game1()
     {
@@ -30,12 +37,54 @@ public class Game1 : Game
 
         _font = Content.Load<SpriteFont>("GameFont");
 
-        // Loads texture for player pedestrian
         _pedTexture = Content.Load<Texture2D>("playerPed");
+        _carTexture = Content.Load<Texture2D>("carImg");
+        _truckTexture = Content.Load<Texture2D>("truckImg");
 
-        // Creates pedestrian with custom values, same texture
-        _ped = new Ped(Color.Green, 4.5f, 1.0f, false, _pedTexture); 
+        _vehicles = new List<Vehicle>();
+        _rng = new Random();
 
+        float[] laneY = { 150, 230, 390, 470 };
+
+        foreach (float y in laneY)
+        {
+            int dir = (y < 300) ? -1 : 1;
+
+            float laneSpeed;
+
+            Color tint = new Color(_rng.Next(256), _rng.Next(256), _rng.Next(256), 255);
+
+            if (y == 230 || y == 390) // inside lanes, fast
+            {
+                laneSpeed = 4f + (float)_rng.NextDouble() * 2f;
+            }
+            else // outer lanes, slow
+            {
+                laneSpeed = 2f + (float)_rng.NextDouble() * 1.5f;
+            }
+
+            for (int i = 0; i < 3; i++)
+            {
+                float spacing = 250f;
+                float startX = i * spacing;
+
+                Color color = new Color(_rng.Next(256), _rng.Next(256), _rng.Next(256), 255);
+
+                if (y == 230 || y == 390)
+                {
+                    // inside lanes, fast cars
+                    _vehicles.Add(new Car(_carTexture, new Vector2(startX, y), laneSpeed, dir, color));
+                }
+                else
+                {
+                    // outer lanes, slow trucks
+                    _vehicles.Add(new Truck(_truckTexture, new Vector2(startX, y), laneSpeed, dir, color));
+                }
+            }
+
+        }
+
+        _ped = new Ped(Color.Green, 4.5f, 1.0f, false, _pedTexture);
     }
 
     protected override void Update(GameTime gameTime)
@@ -43,8 +92,17 @@ public class Game1 : Game
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
-        // Update ped object for movement and rushing
         _ped.Update();
+
+        foreach (Vehicle v in _vehicles)
+        {
+            v.Update();
+
+            if (v.GetCollisionRect().Intersects(_ped.GetCollisionRect()))
+            {
+                _ped.SetPosition(new Vector2(400, 500));
+            }
+        }
 
         base.Update(gameTime);
     }
@@ -55,14 +113,12 @@ public class Game1 : Game
 
         _spriteBatch.Begin();
 
-        // Draws ped
         _ped.Draw(_spriteBatch);
 
-        // Draws isRushing bool state
-        _spriteBatch.DrawString(
-            _font, $"Rushing: {_ped.GetIsRushing()}",
-            new Vector2(10, 10),
-            Color.White);
+        foreach (Vehicle v in _vehicles)
+        {
+            v.Draw(_spriteBatch);
+        }
 
         _spriteBatch.End();
 

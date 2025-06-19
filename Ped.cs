@@ -98,6 +98,15 @@ namespace GME1011_A2_Part2_ChloeF
             }
 
         }
+        public Rectangle GetCollisionRect()
+        {
+            return new Rectangle(
+                (int)(_position.X - (_texture.Width / 2f) * _scale),
+                (int)(_position.Y - (_texture.Height / 2f) * _scale),
+                (int)(_texture.Width * _scale),
+                (int)(_texture.Height * _scale)
+            );
+        }
 
     }
 }
