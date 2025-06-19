@@ -23,17 +23,6 @@ namespace GME1011_A2_Part2_ChloeF
         // Position
         private Vector2 _position;
 
-        // Zero-argument constructor
-        public Ped()
-        {
-            _color = Color.White;
-            _speed = 3.5f;
-            _scale = 1.0f;
-            _isRushing = false;
-            _texture = null;
-            _position = new Vector2(200, 400);
-        }
-
         // Argumented constructor
         public Ped(Color color, float speed, float scale, bool isRushing, Texture2D texture)
         {
@@ -42,7 +31,7 @@ namespace GME1011_A2_Part2_ChloeF
             this._scale = scale;
             this._isRushing = isRushing;
             this._texture = texture;
-            this._position = new Vector2(600, 400);
+            this._position = new Vector2(400, 500);
         }
 
         // Accessors
@@ -58,11 +47,6 @@ namespace GME1011_A2_Part2_ChloeF
         public void SetScale(float scale) { _scale = scale; }
         public void SetIsRushing(bool isRushing) { _isRushing = isRushing; }
         public void SetPosition(Vector2 position) { _position = position; }
-
-        public void SetTexture(Texture2D texture)
-        {
-            _texture = texture;
-        }
 
         public void Update()
         {
