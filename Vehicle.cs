@@ -7,11 +7,11 @@ namespace GME1011_A2_Part2_ChloeF
     public class Vehicle
     {
         // Attributes
-        private Texture2D _texture;
-        private Vector2 _position;
-        private float _speed;
-        private Color _color;
-        private int _direction; // 1 = right, -1 = left
+        protected Texture2D _texture;
+        protected Vector2 _position;
+        protected float _speed;
+        protected Color _color;
+        protected int _direction; // 1 = right, -1 = left
 
         private static Random _rng = new Random();
 
