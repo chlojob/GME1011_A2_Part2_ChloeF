@@ -20,6 +20,9 @@ public class Game1 : Game
     private Texture2D _truckTexture;
     private Random _rng;
 
+    private Carrot _carrot;
+    private Texture2D _carrotTexture;
+
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -29,6 +32,8 @@ public class Game1 : Game
         _graphics.PreferredBackBufferWidth = 800;
         _graphics.PreferredBackBufferHeight = 600;
         _graphics.ApplyChanges();
+
+        _rng = new Random();
     }
 
     protected override void LoadContent()
@@ -40,9 +45,11 @@ public class Game1 : Game
         _pedTexture = Content.Load<Texture2D>("playerPed");
         _carTexture = Content.Load<Texture2D>("carImg");
         _truckTexture = Content.Load<Texture2D>("truckImg");
+        _carrotTexture = Content.Load<Texture2D>("carrotImg");
+
+        _carrot = new Carrot(_carrotTexture, new Vector2(_rng.Next(100, 700), 50));
 
         _vehicles = new List<Vehicle>();
-        _rng = new Random();
 
         float[] laneY = { 150, 230, 390, 470 };
 
@@ -107,6 +114,20 @@ public class Game1 : Game
             }
         }
 
+        if (_ped.GetCollisionRect().Intersects(_carrot.GetCollisionRect()))
+        {
+            if (_carrot.IsTop())
+            {
+                _carrot.SetPosition(new Vector2(_rng.Next(100, 700), 550)); // Bottom
+                _carrot.SetIsTop(false);
+            }
+            else
+            {
+                _carrot.SetPosition(new Vector2(_rng.Next(100, 700), 50));  // Top
+                _carrot.SetIsTop(true);
+            }
+        }
+
         base.Update(gameTime);
     }
 
@@ -122,6 +143,8 @@ public class Game1 : Game
         {
             v.Draw(_spriteBatch);
         }
+
+        _carrot.Draw(_spriteBatch);
 
         _spriteBatch.End();
 
