@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace GME1011_A2_Part2_ChloeF
@@ -11,6 +12,8 @@ namespace GME1011_A2_Part2_ChloeF
         private float _speed;
         private Color _color;
         private int _direction; // 1 = right, -1 = left
+
+        private static Random _rng = new Random();
 
         // Constructor
         public Vehicle(Texture2D texture, Vector2 position, float speed, int direction, Color color)
@@ -41,10 +44,13 @@ namespace GME1011_A2_Part2_ChloeF
             this._position.X += this._speed * this._direction;
 
             if (this._direction == 1 && this._position.X > 850)
-                this._position.X = -this._texture.Width;
-
-            if (this._direction == -1 && this._position.X < -this._texture.Width)
-                this._position.X = 850;
+            {
+                this._position.X = -this._texture.Width - _rng.Next(100, 300);
+            }
+            else if (this._direction == -1 && this._position.X < -this._texture.Width)
+            {
+                this._position.X = 850 + _rng.Next(100, 300);
+            }
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
@@ -64,14 +70,15 @@ namespace GME1011_A2_Part2_ChloeF
             );
         }
 
-        // Collision
         public Rectangle GetCollisionRect()
         {
+            int padding = 10; // shrink box by 10 pixels on all sides
+
             return new Rectangle(
-                (int)(this._position.X - this._texture.Width / 2f),
-                (int)(this._position.Y - this._texture.Height / 2f),
-                this._texture.Width,
-                this._texture.Height
+                (int)(_position.X - _texture.Width / 2f) + padding,
+                (int)(_position.Y - _texture.Height / 2f) + padding,
+                _texture.Width - padding * 2,
+                _texture.Height - padding * 2
             );
         }
     }
