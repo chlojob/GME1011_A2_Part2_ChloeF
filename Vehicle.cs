@@ -18,11 +18,11 @@ namespace GME1011_A2_Part2_ChloeF
         // Constructor
         public Vehicle(Texture2D texture, Vector2 position, float speed, int direction, Color color)
         {
-            this._texture = texture;
-            this._position = position;
-            this._speed = speed;
-            this._direction = direction;
-            this._color = color;
+            _texture = texture;
+            _position = position;
+            _speed = speed;
+            _direction = direction;
+            _color = color;
         }
 
         // Accessors
@@ -33,43 +33,45 @@ namespace GME1011_A2_Part2_ChloeF
         public int GetDirection() { return _direction; }
 
         // Mutators
-        public void SetTexture(Texture2D texture) { this._texture = texture; }
-        public void SetPosition(Vector2 position) { this._position = position; }
-        public void SetSpeed(float speed) { this._speed = speed; }
-        public void SetColor(Color color) { this._color = color; }
-        public void SetDirection(int direction) { this._direction = direction; }
+        public void SetTexture(Texture2D texture) { _texture = texture; }
+        public void SetPosition(Vector2 position) { _position = position; }
+        public void SetSpeed(float speed) { _speed = speed; }
+        public void SetColor(Color color) { _color = color; }
+        public void SetDirection(int direction) { _direction = direction; }
 
         public virtual void Update()
         {
-            this._position.X += this._speed * this._direction;
+            _position.X += _speed * _direction;
 
-            if (this._direction == 1 && this._position.X > 850)
+            // Loop vehicle to other side if offscreen
+            if (_direction == 1 && _position.X > 850)
             {
-                this._position.X = -this._texture.Width - _rng.Next(100, 300);
+                _position.X = -_texture.Width - _rng.Next(100, 300);
             }
-            else if (this._direction == -1 && this._position.X < -this._texture.Width)
+            else if (_direction == -1 && _position.X < -_texture.Width)
             {
-                this._position.X = 850 + _rng.Next(100, 300);
+                _position.X = 850 + _rng.Next(100, 300);
             }
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            float rotation = (this._direction == -1) ? MathHelper.Pi : 0f;
+            float rotation = (_direction == -1) ? MathHelper.Pi : 0f;
 
             spriteBatch.Draw(
-                this._texture,
-                this._position,
+                _texture,
+                _position,
                 null,
-                this._color,
+                _color,
                 rotation,
-                new Vector2(this._texture.Width / 2f, this._texture.Height / 2f),
+                new Vector2(_texture.Width / 2f, _texture.Height / 2f),
                 1.0f,
                 SpriteEffects.None,
                 0f
             );
         }
 
+        // Smaller collision box for leeway
         public Rectangle GetCollisionRect()
         {
             int padding = 10; // shrink box by 10 pixels on all sides

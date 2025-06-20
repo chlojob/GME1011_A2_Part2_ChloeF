@@ -56,6 +56,48 @@
 /processorParam:TextureFormat=Color
 /build:playerPed.png
 
+#begin track1.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:track1.mp3
+
+#begin track2.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:track2.mp3
+
+#begin track3.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:track3.mp3
+
+#begin track4.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:track4.mp3
+
+#begin track5.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:track5.mp3
+
+#begin track6.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:track6.mp3
+
+#begin track7.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:track7.mp3
+
 #begin truckImg.png
 /importer:TextureImporter
 /processor:TextureProcessor

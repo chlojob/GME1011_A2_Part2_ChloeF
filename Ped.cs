@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -7,16 +6,20 @@ namespace GME1011_A2_Part2_ChloeF
 {
     public class Ped
     {
+        // Attributes
         private Color _color;
         private float _speed;
         private float _scale;
         private bool _isRushing;
 
-        private Texture2D _texture;
-        private Vector2 _position;
+        private Texture2D _texture; 
+        private Vector2 _position;  
 
-        private Color[] _textureData;
+        private Color[] _textureData;         // pixel data for pixel-perfect collision
 
+        private SpriteEffects _spriteEffects = SpriteEffects.None;  // for flipping ped sprite
+
+        // Constructor
         public Ped(Color color, float speed, float scale, bool isRushing, Texture2D texture)
         {
             _color = color;
@@ -24,41 +27,40 @@ namespace GME1011_A2_Part2_ChloeF
             _scale = scale;
             _isRushing = isRushing;
             _texture = texture;
-            _position = new Vector2(400, 550);
+            _position = new Vector2(400, 550);  // start near bottom middle
 
+            // Grab texture pixel data for pixel-perfect collision
             _textureData = new Color[_texture.Width * _texture.Height];
             _texture.GetData(_textureData);
         }
 
-        public Color GetColor() { return _color; }
-        public float GetSpeed() { return _speed; }
-        public float GetScale() { return _scale; }
-        public bool GetIsRushing() { return _isRushing; }
-        public Vector2 GetPosition() { return _position; }
-
-        public void SetColor(Color color) { _color = color; }
-        public void SetSpeed(float speed) { _speed = speed; }
-        public void SetScale(float scale) { _scale = scale; }
-        public void SetIsRushing(bool isRushing) { _isRushing = isRushing; }
-        public void SetPosition(Vector2 position) { _position = position; }
-
+        // Accessors, mutators
         public void Update()
         {
             KeyboardState keyState = Keyboard.GetState();
-            _isRushing = keyState.IsKeyDown(Keys.Space);
 
+            // Speed up when pressing space, aka "rushing"
+            _isRushing = keyState.IsKeyDown(Keys.Space);
             float currentSpeed = _isRushing ? _speed + 2.5f : _speed;
 
             if (keyState.IsKeyDown(Keys.Up) || keyState.IsKeyDown(Keys.W))
                 _position.Y -= currentSpeed;
             if (keyState.IsKeyDown(Keys.Down) || keyState.IsKeyDown(Keys.S))
                 _position.Y += currentSpeed;
-            if (keyState.IsKeyDown(Keys.Left) || keyState.IsKeyDown(Keys.A))
-                _position.X -= currentSpeed;
-            if (keyState.IsKeyDown(Keys.Right) || keyState.IsKeyDown(Keys.D))
-                _position.X += currentSpeed;
 
-            // Keep player in screen bounds
+            // Move horizontally and flip sprite if moving left
+            if (keyState.IsKeyDown(Keys.Left) || keyState.IsKeyDown(Keys.A))
+            {
+                _position.X -= currentSpeed;
+                _spriteEffects = SpriteEffects.FlipHorizontally;
+            }
+            else if (keyState.IsKeyDown(Keys.Right) || keyState.IsKeyDown(Keys.D))
+            {
+                _position.X += currentSpeed;
+                _spriteEffects = SpriteEffects.None;
+            }
+
+            // Keep player inside screen bounds
             _position.X = MathHelper.Clamp(_position.X, 32, 800 - 32);
             _position.Y = MathHelper.Clamp(_position.Y, 32, 600 - 32);
         }
@@ -73,11 +75,12 @@ namespace GME1011_A2_Part2_ChloeF
                 0f,
                 new Vector2(_texture.Width / 2f, _texture.Height / 2f),
                 _scale,
-                SpriteEffects.None,
+                _spriteEffects,
                 0f
             );
         }
 
+        // Collisions
         public Rectangle GetCollisionRect()
         {
             return new Rectangle(
@@ -88,6 +91,7 @@ namespace GME1011_A2_Part2_ChloeF
             );
         }
 
+        // Pixel-perfect collision check with vehicle rectangle
         public bool PixelPerfectCollision(Vehicle other)
         {
             Rectangle rectA = this.GetCollisionRect();
@@ -110,7 +114,7 @@ namespace GME1011_A2_Part2_ChloeF
 
                     Color colorA = _textureData[ay * _texture.Width + ax];
 
-                    // Treat vehicle as simple rectangle — always solid
+                    // If player pixel is visible (non-transparent), it's a hit
                     if (colorA.A > 10)
                         return true;
                 }

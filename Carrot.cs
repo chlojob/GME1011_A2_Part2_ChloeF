@@ -13,9 +13,9 @@ namespace GME1011_A2_Part2_ChloeF
         // Constructor
         public Carrot(Texture2D texture, Vector2 position)
         {
-            this._texture = texture;
-            this._position = position;
-            this._isTop = true;
+            _texture = texture;
+            _position = position;
+            _isTop = true;
         }
 
         // Accessors
@@ -24,17 +24,17 @@ namespace GME1011_A2_Part2_ChloeF
 
         // Mutators
         public void SetPosition(Vector2 position) { _position = position; }
-        public void SetIsTop(bool isTop) { _isTop = isTop; }
+        public void SetIsTop(bool isTop) { _isTop = isTop; } // Bool for carrot being at top of screen. It alternates. Special alternating carrot.
 
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(
-                this._texture,
-                this._position,
+                _texture,
+                _position,
                 null,
                 Color.White,
                 0f,
-                new Vector2(this._texture.Width / 2f, this._texture.Height / 2f),
+                new Vector2(_texture.Width / 2f, _texture.Height / 2f),
                 1.0f,
                 SpriteEffects.None,
                 0f
@@ -45,10 +45,10 @@ namespace GME1011_A2_Part2_ChloeF
         public Rectangle GetCollisionRect()
         {
             return new Rectangle(
-                (int)(this._position.X - this._texture.Width / 2f),
-                (int)(this._position.Y - this._texture.Height / 2f),
-                this._texture.Width,
-                this._texture.Height
+                (int)(_position.X - _texture.Width / 2f),
+                (int)(_position.Y - _texture.Height / 2f),
+                _texture.Width,
+                _texture.Height
             );
         }
     }
