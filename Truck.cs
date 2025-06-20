@@ -9,16 +9,5 @@ namespace GME1011_A2_Part2_ChloeF
             : base(texture, position, speed, direction, color)
         {
         }
-
-        public override void Update()
-        {
-            _position.X += _speed * _direction * 0.8f;
-
-            if (_direction == 1 && _position.X > 850)
-                _position.X = -_texture.Width;
-
-            if (_direction == -1 && _position.X < -_texture.Width)
-                _position.X = 850;
-        }
     }
 }

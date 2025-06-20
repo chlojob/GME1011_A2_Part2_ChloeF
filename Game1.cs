@@ -84,7 +84,10 @@ public class Game1 : Game
 
         }
 
-        _ped = new Ped(Color.Green, 4.5f, 1.0f, false, _pedTexture);
+        Color pedColor = new Color(_rng.Next(256), _rng.Next(256), _rng.Next(256), 255);
+
+        _ped = new Ped(pedColor, 4.5f, 1.0f, false, _pedTexture);
+
     }
 
     protected override void Update(GameTime gameTime)
@@ -100,7 +103,7 @@ public class Game1 : Game
 
             if (v.GetCollisionRect().Intersects(_ped.GetCollisionRect()))
             {
-                _ped.SetPosition(new Vector2(400, 500));
+                _ped.SetPosition(new Vector2(400, 550));
             }
         }
 

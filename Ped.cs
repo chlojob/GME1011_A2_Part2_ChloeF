@@ -13,17 +13,14 @@ namespace GME1011_A2_Part2_ChloeF
     public class Ped
     {
         // Attributes
+        private Texture2D _texture;
+        private Vector2 _position;
         private Color _color;
         private float _speed;
         private float _scale;
         private bool _isRushing;
 
-        private Texture2D _texture;
-
-        // Position
-        private Vector2 _position;
-
-        // Argumented constructor
+        // Constructor
         public Ped(Color color, float speed, float scale, bool isRushing, Texture2D texture)
         {
             this._color = color;
@@ -31,7 +28,7 @@ namespace GME1011_A2_Part2_ChloeF
             this._scale = scale;
             this._isRushing = isRushing;
             this._texture = texture;
-            this._position = new Vector2(400, 500);
+            this._position = new Vector2(400, 550);
         }
 
         // Accessors
